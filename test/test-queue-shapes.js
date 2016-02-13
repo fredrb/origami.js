@@ -425,6 +425,60 @@ describe("Drawing Queues - Shapes", function() {
           expect(params.style.borderStyle).to.eql(borderStyle['solid']);
           expect(params.style.borderColor).to.eql('#FFF');
         });
+
+        it("should accept css border parameters", function() {
+          var canvas = document.querySelector("canvas");
+          expect(canvas).to.not.equal(null);
+          origami('canvas').rect(100, 210, 0, {
+            background: 'blue',
+            border : '1px solid black'
+          });
+
+          var contexts = origami.getContexts();
+          expect(contexts.length).to.be.equal(1);
+          expect(contexts[0]).to.be.a('object');
+
+          var queue = contexts[0].queue;
+          expect(queue).to.be.a('array');
+          expect(queue.length).to.be.equal(1);
+
+          expect(queue[0]).to.have.all.keys(
+            'assign', 'loaded', 'params');
+
+          var params = queue[0].params;
+
+          expect(params.style.borderSize).to.eql('1');
+          expect(params.style.borderStyle).to.eql(borderStyle['solid']);
+          expect(params.style.borderColor).to.eql('black');
+
+        });
+
+        it("should accept css border parameters in any order", function() {
+          var canvas = document.querySelector("canvas");
+          expect(canvas).to.not.equal(null);
+          origami('canvas').rect(100, 210, 0, {
+            background: 'blue',
+            border : 'solid 1px black'
+          });
+
+          var contexts = origami.getContexts();
+          expect(contexts.length).to.be.equal(1);
+          expect(contexts[0]).to.be.a('object');
+
+          var queue = contexts[0].queue;
+          expect(queue).to.be.a('array');
+          expect(queue.length).to.be.equal(1);
+
+          expect(queue[0]).to.have.all.keys(
+            'assign', 'loaded', 'params');
+
+          var params = queue[0].params;
+
+          expect(params.style.borderSize).to.eql('1');
+          expect(params.style.borderStyle).to.eql(borderStyle['solid']);
+          expect(params.style.borderColor).to.eql('black');
+
+        });
       });
   });
 
